@@ -45,6 +45,7 @@ public class BaseEntity {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    // Generating UUID for primary key
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
