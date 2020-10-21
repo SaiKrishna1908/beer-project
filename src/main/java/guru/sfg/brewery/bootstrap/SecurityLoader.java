@@ -20,9 +20,9 @@ public class SecurityLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private static final String ADMIN_ROLE = "ADMIN";
-    private static final String CUSTOMER_ROLE = "CUSTOMER";
-    private static final String USER_ROLE = "USER";
+    private static final String ADMIN_ROLE = "ROLE_ADMIN";
+    private static final String CUSTOMER_ROLE = "ROLE_CUSTOMER";
+    private static final String USER_ROLE = "ROLE_USER";
 
 
     @Override

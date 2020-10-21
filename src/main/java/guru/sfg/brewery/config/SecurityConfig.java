@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,6 +29,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled =  true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager manager) {
@@ -63,12 +65,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 RestHeaderAuthFilter.class);
 
         http.authorizeRequests(authorize -> {
-            authorize.antMatchers("/", "/webjars/**", "/resources/**")
-                    .permitAll().antMatchers("/beers/find", "/beers*").permitAll()
+            authorize.antMatchers("/", "/webjars/**", "/resources/**").permitAll()
+                    .antMatchers("/beers/find", "/beers*").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
-                    .permitAll().mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
-                    .antMatchers("/h2-console/**").permitAll();
+                    .hasAnyRole("ADMIN","CUSTOMER")
+                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
+                    .hasAnyRole("ADMIN","CUSTOMER")
+                    .antMatchers("/h2-console/**").permitAll()
+                    .mvcMatchers(HttpMethod.DELETE,"/api/v1/beer/**").hasRole("ADMIN")
+                    .mvcMatchers(HttpMethod.GET, "/brewery/breweries","/brewery/breweries/index"
+                                , "/brewery/breweries/index.html","/brewery/breweries.html")
+                                .hasAnyRole("ADMIN", "CUSTOMER")
+                    .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN",
+                    "CUSTOMER");
 
+
+                //can also use mvc matcher
         })
                 .authorizeRequests()
                 .anyRequest().authenticated()
@@ -76,6 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().and()
                 .httpBasic();
 
+
+                //for h2 console
                 http.headers().frameOptions().sameOrigin();
     }
 

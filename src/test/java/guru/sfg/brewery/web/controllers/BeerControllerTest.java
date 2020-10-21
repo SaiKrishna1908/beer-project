@@ -20,6 +20,7 @@ package guru.sfg.brewery.web.controllers;
 import guru.sfg.brewery.domain.Beer;
 import guru.sfg.brewery.repositories.BeerRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -104,6 +105,7 @@ class BeerControllerTest {
                 .andExpect(view().name("beers/beerDetails"))
                 .andExpect(model().attribute("beer", hasProperty("id", is(uuid))));
     }
+
 
     @Test
     void initCreationForm() throws Exception {
