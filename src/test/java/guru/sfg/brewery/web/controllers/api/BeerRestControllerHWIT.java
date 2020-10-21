@@ -5,11 +5,12 @@ package guru.sfg.brewery.web.controllers.api;
 import guru.sfg.brewery.web.controllers.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@SpringBootTest
  class BeerRestControllerHWIT extends BaseIT {
 
     private static final String URL = "/api/v1/beer/b8cf34de-1488-4abf-ba6d-1aba3e0b99dc";
