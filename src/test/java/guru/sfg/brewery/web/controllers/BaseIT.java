@@ -23,22 +23,12 @@ public class BaseIT {
     @Autowired
     WebApplicationContext wac;
 
-    @MockBean
-    BeerRepository beerRepository;
 
     public MockMvc mockMvc;
 
-    @MockBean
-    BeerInventoryRepository beerInventoryRepository;
 
-    @MockBean
-    BreweryService breweryService;
 
-//    @MockBean
-//    CustomerRepository customerRepository;
 
-    @MockBean
-    BeerService beerService;
 
     protected  static final String ADMIN = "krishna";
     protected  static final String ADMIN_PASSWORD = "password";
@@ -55,8 +45,8 @@ public class BaseIT {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
     }
 
-    public static Stream<Arguments> getStreamAdminCustomer(){
-        return Stream.of(Arguments.of("krishna", "password"),
-                        Arguments.of("scott", "tiger"));
-    }
+//    public static Stream<Arguments> getStreamAdminCustomer(){
+//        return Stream.of(Arguments.of("krishna", "password"),
+//                        Arguments.of("scott", "tiger"));
+//    }
 }
