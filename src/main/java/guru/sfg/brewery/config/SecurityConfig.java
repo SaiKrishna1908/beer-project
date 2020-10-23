@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
                     .hasAnyRole("ADMIN","CUSTOMER")
                     .antMatchers("/h2-console/**").permitAll()
-                    .mvcMatchers(HttpMethod.DELETE,"/api/v1/beer/**").hasRole("ADMIN")
+//                    .mvcMatchers(HttpMethod.DELETE,"/api/v1/beer/**").hasRole("ADMIN")
                     .mvcMatchers(HttpMethod.GET, "/brewery/breweries","/brewery/breweries/index"
                                 , "/brewery/breweries/index.html","/brewery/breweries.html")
                                 .hasAnyRole("ADMIN", "CUSTOMER")

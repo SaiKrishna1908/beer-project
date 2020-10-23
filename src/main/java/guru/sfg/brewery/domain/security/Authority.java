@@ -22,10 +22,10 @@ public class Authority {
     private Integer id;
 
 
-    private String role;
+    private String permission;
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<User> user  = new HashSet<>();
+    private Set<Role> roles  = new HashSet<>();
 
 
 

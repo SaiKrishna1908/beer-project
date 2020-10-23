@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +39,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> convertToSpringAuthrorities(Set<Authority> authorities) {
         if(authorities != null && authorities.size() > 0){
-            return authorities.stream().map(Authority::getRole).map(SimpleGrantedAuthority::new)
+            return authorities.stream().map(Authority::getPermission).map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet());
         }
         else{

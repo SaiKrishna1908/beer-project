@@ -37,9 +37,9 @@ public class SecurityLoader implements CommandLineRunner {
 
 
 
-        Authority admin = Authority.builder().role(ADMIN_ROLE).build();
-        Authority customer = Authority.builder().role(CUSTOMER_ROLE).build();
-        Authority user = Authority.builder().role(USER_ROLE).build();
+        Authority admin = Authority.builder().permission(ADMIN_ROLE).build();
+        Authority customer = Authority.builder().permission(CUSTOMER_ROLE).build();
+        Authority user = Authority.builder().permission(USER_ROLE).build();
 
 
         admin = authorityRepository.save(admin);

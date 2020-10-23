@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BeerControllerIT extends BaseIT{
 
     @Test
-    @WithMockUser("spring")
+//    @WithMockUser("spring")
     void findBeers() throws Exception {
         mockMvc.perform(get("/beers/find")).andExpect(status().isOk())
         .andExpect(view().name("beers/findBeers"))
