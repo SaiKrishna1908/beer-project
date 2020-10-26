@@ -44,13 +44,14 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
 
 
+
     @RequestMapping("/find")
     public String findCustomers(Model model){
         model.addAttribute("customer", Customer.builder().build());
         return "customers/findCustomers";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
+    @PreAuthorize("hasAuthority('customer.read')")
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name
@@ -85,7 +86,7 @@ public class CustomerController {
         return "customers/createCustomer";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('customer.create')")
     @PostMapping("/new")
     public String processCreationForm(Customer customer) {
         //ToDO: Add Service

@@ -13,14 +13,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -67,17 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(authorize -> {
             authorize.antMatchers("/", "/webjars/**", "/resources/**").permitAll()
                     .antMatchers("/beers/find", "/beers*").permitAll()
-//                    .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
-//                    .hasAnyRole("ADMIN","CUSTOMER")
-//                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
-//                    .hasAnyRole("ADMIN","CUSTOMER")
-                    .antMatchers("/h2-console/**").permitAll()
-//                    .mvcMatchers(HttpMethod.DELETE,"/api/v1/beer/**").hasRole("ADMIN")
-                    .mvcMatchers(HttpMethod.GET, "/brewery/breweries","/brewery/breweries/index"
-                                , "/brewery/breweries/index.html","/brewery/breweries.html")
-                                .hasAnyRole("ADMIN", "CUSTOMER")
-                    .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN",
-                    "CUSTOMER");
+                    .antMatchers("/h2-console/**").permitAll();
 
 
                 //can also use mvc matcher
