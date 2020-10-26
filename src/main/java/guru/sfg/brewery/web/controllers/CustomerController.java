@@ -19,6 +19,8 @@ package guru.sfg.brewery.web.controllers;
 
 import guru.sfg.brewery.domain.Customer;
 import guru.sfg.brewery.repositories.CustomerRepository;
+import guru.sfg.brewery.security.permissions.customer.CustomerCreate;
+import guru.sfg.brewery.security.permissions.customer.CustomerRead;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +53,7 @@ public class CustomerController {
         return "customers/findCustomers";
     }
 
-    @PreAuthorize("hasAuthority('customer.read')")
+    @CustomerRead
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name
@@ -86,7 +88,7 @@ public class CustomerController {
         return "customers/createCustomer";
     }
 
-    @PreAuthorize("hasAuthority('customer.create')")
+    @CustomerCreate
     @PostMapping("/new")
     public String processCreationForm(Customer customer) {
         //ToDO: Add Service

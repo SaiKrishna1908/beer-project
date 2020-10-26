@@ -37,15 +37,14 @@ public class BeerControllerIT extends BaseIT{
     void initCreationForScott() throws Exception{
 
         mockMvc.perform(get("/beers/new").with(httpBasic("scott", "tiger")))
-                .andExpect(status().isOk()).andExpect(model().attributeExists("beer")).andExpect(
-                        view().name("beers/createBeer")
-        );
+                .andExpect(status().isForbidden());
+
     }
 
     @Test
     void initCreationForQuerty() throws Exception{
         mockMvc.perform(get("/beers/new").with(httpBasic("qwerty","password")))
-                .andExpect(status().isOk()).andExpect(model().attributeExists("beer"));
+                .andExpect(status().isForbidden());
     }
 
 
