@@ -16,7 +16,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    private Integer id;
 
     private String name;
 
@@ -24,11 +24,11 @@ public class Role {
     private Set<User> users;
 
     @Singular
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "role_authrority"
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST} , fetch = FetchType.EAGER)
+    @JoinTable(name = "role_authority"
     , joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")},
       inverseJoinColumns = {@JoinColumn(name ="AUTHORITY_ID", referencedColumnName = "ID")}
     )
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities;
 
 }

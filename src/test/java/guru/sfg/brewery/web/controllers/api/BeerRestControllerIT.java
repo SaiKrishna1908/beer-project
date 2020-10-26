@@ -99,6 +99,15 @@ public class BeerRestControllerIT extends BaseIT {
         }
 
 
+        @Test
+        void findBeerByUserRole() throws Exception{
+
+            mockMvc.perform(get("/api/v1/beer/"+beerToDelete().getId())
+                    .with(httpBasic("qwerty", "password")))
+                    .andExpect(status().isOk());
+        }
+
+
 
 
     }
@@ -130,7 +139,7 @@ public class BeerRestControllerIT extends BaseIT {
     @Test
     void findBeersUserRole() throws Exception{
         mockMvc.perform(get("/api/v1/beer/").with(httpBasic("qwerty","password")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
 
     }
 
@@ -139,13 +148,7 @@ public class BeerRestControllerIT extends BaseIT {
 
 
 
-    @Test
-    void findBeerByUserRole() throws Exception{
 
-        mockMvc.perform(get("/api/v1/beer/0631234200036")
-                .with(httpBasic("qwerty", "password")))
-                .andExpect(status().isForbidden());
-    }
 
 
     @Test
@@ -156,12 +159,14 @@ public class BeerRestControllerIT extends BaseIT {
                 .andExpect(status().isOk());
     }
 
+
+
     @Test
     void findBeerByUpcUserRole() throws Exception{
 
-        mockMvc.perform(get("/api/v1/beerUpc/04d33b1f-424c-4a75-8e78-0dda517d2fdc")
+        mockMvc.perform(get("/api/v1/beerUpc/0631234200036")
                 .with(httpBasic("qwerty", "password")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
     }
 
 

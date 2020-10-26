@@ -25,7 +25,7 @@ public class Authority {
     private String permission;
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<Role> roles  = new HashSet<>();
+    private Set<Role> roles;
 
 
 

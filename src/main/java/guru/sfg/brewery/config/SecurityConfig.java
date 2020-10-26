@@ -67,10 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(authorize -> {
             authorize.antMatchers("/", "/webjars/**", "/resources/**").permitAll()
                     .antMatchers("/beers/find", "/beers*").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
-                    .hasAnyRole("ADMIN","CUSTOMER")
-                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
-                    .hasAnyRole("ADMIN","CUSTOMER")
+//                    .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
+//                    .hasAnyRole("ADMIN","CUSTOMER")
+//                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
+//                    .hasAnyRole("ADMIN","CUSTOMER")
                     .antMatchers("/h2-console/**").permitAll()
 //                    .mvcMatchers(HttpMethod.DELETE,"/api/v1/beer/**").hasRole("ADMIN")
                     .mvcMatchers(HttpMethod.GET, "/brewery/breweries","/brewery/breweries/index"

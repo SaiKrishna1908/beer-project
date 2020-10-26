@@ -1,14 +1,21 @@
 package guru.sfg.brewery.bootstrap;
 
 import guru.sfg.brewery.domain.security.Authority;
+import guru.sfg.brewery.domain.security.Role;
 import guru.sfg.brewery.domain.security.User;
 import guru.sfg.brewery.repositories.security.AuthorityRepository;
+import guru.sfg.brewery.repositories.security.RoleRepository;
 import guru.sfg.brewery.repositories.security.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -19,6 +26,7 @@ public class SecurityLoader implements CommandLineRunner {
     private final AuthorityRepository authorityRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private static final String CUSTOMER_ROLE = "ROLE_CUSTOMER";
@@ -26,6 +34,7 @@ public class SecurityLoader implements CommandLineRunner {
 
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         if(authorityRepository.count() == 0)
@@ -34,34 +43,55 @@ public class SecurityLoader implements CommandLineRunner {
 
     private void loadUserData(){
 
+        //Beer Operations
+
+        Authority createBeer = authorityRepository.save(Authority.builder().permission("beer.create").build());
+        Authority updateBeer = authorityRepository.save(Authority.builder().permission("beer.update").build());
+        Authority readBeer = authorityRepository.save(Authority.builder().permission("beer.read").build());
+        Authority deleteBeer = authorityRepository.save(Authority.builder().permission("beer.delete").build());
+
+        Authority createBrewery = authorityRepository.save(Authority.builder().permission("brewery.create").build());
+        Authority updateBrewery = authorityRepository.save(Authority.builder().permission("brewery.update").build());
+        Authority readBrewery = authorityRepository.save(Authority.builder().permission("brewery.read").build());
+        Authority deleteBrewery = authorityRepository.save(Authority.builder().permission("brewery.delete").build());
+
+        Authority createCustomer = authorityRepository.save(Authority.builder().permission("customer.create").build());
+        Authority updateCustomer = authorityRepository.save(Authority.builder().permission("customer.update").build());
+        Authority readCustomer = authorityRepository.save(Authority.builder().permission("customer.read").build());
+        Authority deleteCustomer = authorityRepository.save(Authority.builder().permission("customer.delete").build());
 
 
 
-        Authority admin = Authority.builder().permission(ADMIN_ROLE).build();
-        Authority customer = Authority.builder().permission(CUSTOMER_ROLE).build();
-        Authority user = Authority.builder().permission(USER_ROLE).build();
+        Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
+        Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
+        Role userRole = roleRepository.save(Role.builder().name("USER").build());
 
 
-        admin = authorityRepository.save(admin);
-        customer = authorityRepository.save(customer);
-        user = authorityRepository.save(user);
+        adminRole.setAuthorities(new HashSet<>(Set.of(createBeer,
+                updateBeer, readBeer,deleteBeer
+                ,createBrewery,updateBrewery,readBrewery,deleteBrewery,
+                readCustomer,updateCustomer,deleteCustomer,createCustomer)));
+
+        customerRole.setAuthorities( new HashSet<>(Set.of(readBeer,readCustomer,readBrewery)));
+
+        userRole.setAuthorities( new HashSet<>(Set.of(readBeer)));
 
 
+        roleRepository.saveAll(Arrays.asList(adminRole, customerRole, userRole));
 
-        User jack = User.builder().username("jack").password(passwordEncoder.encode("password1"))
-                .accountNonExpired(true).accountNonLocked(true)
-                .credentialNonExpired(true).enabled(true).authority(admin).build();
+        userRepository.save(User.builder().username("jack").password(passwordEncoder.encode("password1"))
+                .role(adminRole).build());
 
         User rose = User.builder().username("rose").password(passwordEncoder.encode("password2")).
                 accountNonExpired(true).accountNonLocked(true)
-                .credentialNonExpired(true).enabled(true).authority(customer).build();
+                .credentialNonExpired(true).enabled(true).role(customerRole).build();
 
         User willow = User.builder().username("dark").password(passwordEncoder.encode("password3"))
                     .accountNonExpired(true)
                     .accountNonLocked(true)
                     .credentialNonExpired(true)
                     .enabled(true)
-                    .authority(user)
+                    .role(userRole)
                     .build();
 
         User krishna = User.builder().username("krishna")
@@ -69,24 +99,24 @@ public class SecurityLoader implements CommandLineRunner {
                         .accountNonExpired(true).accountNonLocked(true)
                         .credentialNonExpired(true)
                         .enabled(true)
-                        .authority(admin)
+                        .role(adminRole)
                         .build();
 
         User scott = User.builder().username("scott")
                     .password(passwordEncoder.encode("tiger"))
                     .accountNonExpired(true).accountNonLocked(true)
                     .credentialNonExpired(true)
-                    .enabled(true).authority(customer).build();
+                    .enabled(true).role(customerRole).build();
 
         User qwerty = User.builder().username("qwerty")
                     .password(passwordEncoder.encode("password"))
                     .accountNonExpired(true).accountNonLocked(true)
                     .credentialNonExpired(true)
-                    .enabled(true).authority(user).build();
+                    .enabled(true).role(userRole).build();
 
 
 
-        userRepository.save(jack);
+
         userRepository.save(rose);
         userRepository.save(willow);
         userRepository.save(krishna);
