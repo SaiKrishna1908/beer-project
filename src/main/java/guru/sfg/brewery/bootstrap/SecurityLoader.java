@@ -45,22 +45,37 @@ public class SecurityLoader implements CommandLineRunner {
 
         //Beer Operations
 
+        //beer auth
         Authority createBeer = authorityRepository.save(Authority.builder().permission("beer.create").build());
         Authority updateBeer = authorityRepository.save(Authority.builder().permission("beer.update").build());
         Authority readBeer = authorityRepository.save(Authority.builder().permission("beer.read").build());
         Authority deleteBeer = authorityRepository.save(Authority.builder().permission("beer.delete").build());
 
+        //customer brewery
         Authority createBrewery = authorityRepository.save(Authority.builder().permission("brewery.create").build());
         Authority updateBrewery = authorityRepository.save(Authority.builder().permission("brewery.update").build());
         Authority readBrewery = authorityRepository.save(Authority.builder().permission("brewery.read").build());
         Authority deleteBrewery = authorityRepository.save(Authority.builder().permission("brewery.delete").build());
 
+        //customer auths
         Authority createCustomer = authorityRepository.save(Authority.builder().permission("customer.create").build());
         Authority updateCustomer = authorityRepository.save(Authority.builder().permission("customer.update").build());
         Authority readCustomer = authorityRepository.save(Authority.builder().permission("customer.read").build());
         Authority deleteCustomer = authorityRepository.save(Authority.builder().permission("customer.delete").build());
 
+        //beerorder
 
+        Authority createOrder = authorityRepository.save(Authority.builder().permission("order.create").build());
+        Authority updateOrder = authorityRepository.save(Authority.builder().permission("order.update").build());
+        Authority deleteOrder = authorityRepository.save(Authority.builder().permission("order.delete").build());
+        Authority readOrder = authorityRepository.save(Authority.builder().permission("order.read").build());
+
+        //customer beer
+
+        Authority createOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.create").build());
+        Authority updateOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.update").build());
+        Authority deleteOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.delete").build());
+        Authority readOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.read").build());
 
         Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
         Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
@@ -70,9 +85,11 @@ public class SecurityLoader implements CommandLineRunner {
         adminRole.setAuthorities(new HashSet<>(Set.of(createBeer,
                 updateBeer, readBeer,deleteBeer
                 ,createBrewery,updateBrewery,readBrewery,deleteBrewery,
-                readCustomer,updateCustomer,deleteCustomer,createCustomer)));
+                readCustomer,updateCustomer,deleteCustomer,createCustomer
+                , createOrder, updateOrder, deleteOrder, readOrder)));
 
-        customerRole.setAuthorities( new HashSet<>(Set.of(readBeer,readCustomer,readBrewery)));
+        customerRole.setAuthorities( new HashSet<>(Set.of(readBeer,readCustomer,readBrewery,createOrderCustomer
+        ,   updateOrderCustomer, readOrderCustomer, deleteOrderCustomer)));
 
         userRole.setAuthorities( new HashSet<>(Set.of(readBeer)));
 
@@ -123,7 +140,7 @@ public class SecurityLoader implements CommandLineRunner {
         userRepository.save(scott);
         userRepository.save(qwerty);
 
-        log.debug("Loaded User data succussfully");
+        log.debug("Loaded User data successfully");
 
 
     }
