@@ -1,6 +1,9 @@
 package guru.sfg.brewery.web.controllers.api;
 
 import guru.sfg.brewery.domain.BeerOrder;
+import guru.sfg.brewery.security.permissions.order.CreateOrder;
+import guru.sfg.brewery.security.permissions.order.PickupOrder;
+import guru.sfg.brewery.security.permissions.order.ReadOrder;
 import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
@@ -23,6 +26,7 @@ public class BeerOrderController {
     private final BeerOrderService beerOrderService;
 
 
+    @ReadOrder
     @GetMapping("orders")
     public BeerOrderPagedList listOrders(@PathVariable("customerId") UUID customerId,
                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -39,17 +43,21 @@ public class BeerOrderController {
         return beerOrderService.listOrders(customerId, PageRequest.of(pageNumber,pageSize));
     }
 
+    @CreateOrder
     @PostMapping("orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto){
+    public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId,
+                                   @RequestBody BeerOrderDto beerOrderDto){
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    @ReadOrder
     @GetMapping("orders/{orderId}")
     public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
         return beerOrderService.getOrderById(customerId, orderId);
     }
 
+    @PickupOrder
     @PutMapping("/orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){

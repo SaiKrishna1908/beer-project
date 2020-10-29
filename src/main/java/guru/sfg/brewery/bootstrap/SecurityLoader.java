@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RequiredArgsConstructor
-@Component
+//@Component
 @Slf4j
 public class SecurityLoader implements CommandLineRunner {
 

@@ -45,19 +45,25 @@ import java.util.UUID;
 @Slf4j
 public class DefaultBreweryLoader implements CommandLineRunner {
 
-    public static final String TASTING_ROOM = "Tasting Room";
-    public static final String BEER_1_UPC = "0631234200036";
-    public static final String BEER_2_UPC = "0631234300019";
-    public static final String BEER_3_UPC = "0083783375213";
+    private static final String TASTING_ROOM = "Tasting Room";
+    private static final String BEER_1_UPC = "0631234200036";
+    private static final String BEER_2_UPC = "0631234300019";
+    private static final String BEER_3_UPC = "0083783375213";
+
+
+    public static final String ST_PETE_DISTRIBUTING = "St Pete Distributing";
+    public static final String DUNEDIN_DISTRIBUTING = "Dunedin Distributing";
+    public static final String KEY_WEST_DISTRIBUTORS = "Key West Distributors";
+
+    public static final String STPETE_USER = "stpete";
+    public static final String DUNEDIN_USER = "dunedin";
+    public static final String KEYWEST_USER = "keywest";
 
 
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private static final String CUSTOMER_ROLE = "ROLE_CUSTOMER";
     private static final String USER_ROLE = "ROLE_USER";
 
-    private static final String ST_PETE_DISTRIBUTING = "St Pete Distributing";
-    private static final String DUNEBIN_DISTRIBUTIING = "Dunebin Distributing";
-    private static final String KEY_WEST_DISTRIBUTING = "Key West Distributing";
 
 
     private final PasswordEncoder passwordEncoder;
@@ -88,10 +94,10 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Customer stPeteCustomer = customerRepository.save(Customer.builder().customerName(ST_PETE_DISTRIBUTING)
                                     .apiKey(UUID.randomUUID()).build());
 
-        Customer dunebinCustomer = customerRepository.save(Customer.builder().customerName(DUNEBIN_DISTRIBUTIING)
+        Customer dunebinCustomer = customerRepository.save(Customer.builder().customerName(DUNEDIN_DISTRIBUTING)
                 .apiKey(UUID.randomUUID()).build());
 
-        Customer keywestCustomer = customerRepository.save(Customer.builder().customerName(KEY_WEST_DISTRIBUTING)
+        Customer keywestCustomer = customerRepository.save(Customer.builder().customerName(KEY_WEST_DISTRIBUTORS)
                 .apiKey(UUID.randomUUID()).build());
 
         User stPeteUser = userRepository.save(User.builder().username("stpete")
@@ -228,6 +234,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Authority updateOrder = authorityRepository.save(Authority.builder().permission("order.update").build());
         Authority deleteOrder = authorityRepository.save(Authority.builder().permission("order.delete").build());
         Authority readOrder = authorityRepository.save(Authority.builder().permission("order.read").build());
+        Authority pickUpOrder = authorityRepository.save(Authority.builder().permission("order.pickup").build());
 
         //customer beer
 
@@ -235,6 +242,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Authority updateOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.update").build());
         Authority deleteOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.delete").build());
         Authority readOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.read").build());
+        Authority pickUpOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.pickup").build());
 
         Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
         Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
@@ -245,10 +253,10 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 updateBeer, readBeer,deleteBeer
                 ,createBrewery,updateBrewery,readBrewery,deleteBrewery,
                 readCustomer,updateCustomer,deleteCustomer,createCustomer
-                , createOrder, updateOrder, deleteOrder, readOrder)));
+                , createOrder, updateOrder, deleteOrder, readOrder, pickUpOrder)));
 
         customerRole.setAuthorities( new HashSet<>(Set.of(readBeer,readCustomer,readBrewery,createOrderCustomer
-                ,   updateOrderCustomer, readOrderCustomer, deleteOrderCustomer)));
+                ,   updateOrderCustomer, readOrderCustomer, deleteOrderCustomer, pickUpOrderCustomer)));
 
         userRole.setAuthorities( new HashSet<>(Set.of(readBeer)));
 
